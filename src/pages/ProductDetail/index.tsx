@@ -8,12 +8,22 @@ function ProductDetail() {
   const { CO_EMPR, CO_DEPA, CO_AREA } = useParams();
   // console.log(CO_EMPR);    console.log(CO_DEPA);    console.log(CO_AREA);
 
+  type FECita = {
+    // Define the properties of FECita according to your API response
+    // Example:
+    FE_DISPO:string;
+    FECHA: string;
+    HORA: string;
+    // Add more fields as needed
+  };
+
   type TiendaxType = {
     CO_EMPR: string | number;
     CO_DEPA: string | number;
     CO_AREA: string | number;
     DE_AREA: string;
     DE_REFE: string;
+    FE_CITAS: FECita[];
   };
 
   const [tienda, setTienda] = useState<TiendaxType[]>([]);
@@ -224,54 +234,20 @@ function ProductDetail() {
                       Escoge la fecha y hora
                     </option>
 
-                    <option value="2025-05-19 17:00:00.000">
-                      19/05/2025 05:00 PM
-                    </option>
-                    <option value="2025-05-20 11:00:00.000">
-                      20/05/2025 11:00 AM
-                    </option>
-                    <option value="2025-05-20 15:00:00.000">
-                      20/05/2025 03:00 PM
-                    </option>
-                    <option value="2025-05-20 17:00:00.000">
-                      20/05/2025 05:00 PM
-                    </option>
-                    <option value="2025-05-21 11:00:00.000">
-                      21/05/2025 11:00 AM
-                    </option>
-                    <option value="2025-05-21 15:00:00.000">
-                      21/05/2025 03:00 PM
-                    </option>
-                    <option value="2025-05-21 17:00:00.000">
-                      21/05/2025 05:00 PM
-                    </option>
-                    <option value="2025-05-26 11:00:00.000">
-                      26/05/2025 11:00 AM
-                    </option>
-                    <option value="2025-05-26 15:00:00.000">
-                      26/05/2025 03:00 PM
-                    </option>
-                    <option value="2025-05-26 17:00:00.000">
-                      26/05/2025 05:00 PM
-                    </option>
-                    <option value="2025-05-27 11:00:00.000">
-                      27/05/2025 11:00 AM
-                    </option>
-                    <option value="2025-05-27 15:00:00.000">
-                      27/05/2025 03:00 PM
-                    </option>
-                    <option value="2025-05-27 17:00:00.000">
-                      27/05/2025 05:00 PM
-                    </option>
-                    <option value="2025-05-28 11:00:00.000">
-                      28/05/2025 11:00 AM
-                    </option>
-                    <option value="2025-05-28 15:00:00.000">
-                      28/05/2025 03:00 PM
-                    </option>
-                    <option value="2025-05-28 17:00:00.000">
-                      28/05/2025 05:00 PM
-                    </option>
+                    {item.FE_CITAS.map((fe_cita, index) => {
+                    const date = new Date(fe_cita.FE_DISPO);
+                    const formatted =
+                      date instanceof Date && !isNaN(date.getTime())
+                        ? date.toLocaleDateString('es-PE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+                        : fe_cita.FE_DISPO;
+                    return (
+                      <option key={index} value={fe_cita.FE_DISPO}>
+                        {formatted}
+                      </option>
+                    );
+                  })}
+                    
+                    
                   </select>
                 </div>
 
